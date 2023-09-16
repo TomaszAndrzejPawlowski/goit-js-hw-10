@@ -1,51 +1,59 @@
+import Notiflix, { Notify } from 'notiflix';
+import axios from 'axios';
+axios.defaults.headers.common['x-api-key'] =
+  'live_mkuMlJP9LBmkoRnjHtQH8p26XSUgTGsoO6qrSlitn7hlHbp0ZRqd8QRFn7m12sDX';
+import SlimSelect from 'slim-select';
+
 const selectOptions = document.querySelector('.breed-select');
+const errorMsg = document.querySelector('.error');
+const catInfoDiv = document.querySelector('.cat-info');
+
 export const fetchBreeds = () => {
-  return fetch('https://api.thecatapi.com/v1/breeds')
+  return axios
+    .get('https://api.thecatapi.com/v1/breeds')
     .then(response => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      return response.json();
+      console.log(response.data);
+      return response.data;
     })
     .then(breeds => {
-      const markup = breeds
-        .map(breed => {
-          //   console.log(breed);
-          return `<option value="${breed.id}">${breed.name}</option>`;
-        })
-        .join('');
+      const markup = breeds.map(breed => {
+        return `<option value="${breed.id}">${breed.name}</option>`;
+      });
       selectOptions.innerHTML = markup;
-    });
+      new SlimSelect({
+        select: selectOptions,
+        settings: catInfoDiv,
+      });
+    })
+    .catch(error => Notify.failure(errorMsg.textContent));
 };
 
 export const fetchCatByBreed = breedId => {
-  if (document.querySelector('div')) {
-    document.querySelector('div').remove();
+  if (document.querySelector('.cat-img')) {
+    document.querySelector('.cat-img').remove();
   }
   const selectedOptionValue = breedId.currentTarget.value;
-  console.log(selectedOptionValue);
-  return fetch(
-    `https://api.thecatapi.com/v1/images/search?breed_ids=${selectedOptionValue}`
-  )
+  return axios
+    .get(
+      `https://api.thecatapi.com/v1/images/search?breed_ids=${selectedOptionValue}`
+    )
     .then(response => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      return response.json();
+      console.log(response.data);
+      return response.data;
     })
-    .then(breed => {
-      console.log(breed);
+    .then(cat => {
       const markup = `
-             <div><img class="cat-img"
-             src=${breed[0].url} 
-             alt="Photo of a ${breed.url} cat" 
-             width= "400px"
-             height= "300px"/>
-             <h2>${breed.name}</h2>
-             <p>${breed.description}</p>
-             <p><strong>Temperament:</strong> ${breed.temperament}</p></div>
-             `;
-      selectOptions.insertAdjacentHTML('afterend', markup);
+              <div class="cat-img"><img
+              src=${cat[0].url} 
+              alt="Photo of a ${cat[0].breeds[0].name} cat" 
+              width= "400px"
+              height= "300px"/>
+              <div class="cat-desc">
+              <h2>${cat[0].breeds[0].name}</h2>
+              <p>${cat[0].breeds[0].description}</p>
+              <p><strong>Temperament:</strong> ${cat[0].breeds[0].temperament}</p></div></div>
+              `;
+      catInfoDiv.insertAdjacentHTML('afterbegin', markup);
     })
-    .catch(error => console.log(error));
+    .catch(error => Notify.failure(errorMsg.textContent));
 };

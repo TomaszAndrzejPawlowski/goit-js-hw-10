@@ -1,29 +1,26 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
-// import SlimSelect from 'slim-select';
-import Notiflix, { Notify } from 'notiflix';
-import axios from 'axios';
-
-axios.defaults.headers.common['x-api-key'] =
-  'live_mkuMlJP9LBmkoRnjHtQH8p26XSUgTGsoO6qrSlitn7hlHbp0ZRqd8QRFn7m12sDX';
 
 const selectOptions = document.querySelector('.breed-select');
-const errorMsg = document.querySelector('.error');
 
-// new SlimSelect({
-//   select: selectOptions,
-//   data: [
-//     {
-//       label: 'Label 1',
-//       options: [
-//         { text: 'Option 1', value: '1' },
-//         { text: 'Option 2', value: '2' },
-//         { text: 'Option 3', value: '3' },
-//       ],
-//     },
-//   ],
-// });
+// const loadingText = document.querySelector('.loader');
+// const body = document.querySelector('body');
+// const loadingScreen = () => {
+//   window.onload = () => {
+//     if (!body.classList.contains('.body-background')) {
+//       body.classList.add('.body-background');
+//       loadingText.classList.remove('.is-hidden');
+//       selectOptions.classList.add('.is-hidden');
+//     }
 
-selectOptions.addEventListener('change', fetchCatByBreed);
+//     if (body.classList.contains('.body-background')) {
+//       body.classList.remove('.body-background');
+//       loadingText.classList.add('.is-hidden');
+//       selectOptions.classList.remove('.is-hidden');
+//     }
+
+//   };
+// };
+// loadingScreen();
 
 fetchBreeds();
-// Notify.failure(errorMsg.textContent);
+selectOptions.addEventListener('change', fetchCatByBreed);
