@@ -1,10 +1,28 @@
 .body-background {
   background-color: #3f3f3f;
 }
+.cat-img {
+  display: flex;
+  gap: 20px;
+}
+.cat-desc {
+  font-size: 26px;
+}
+.breed-select {
+  font-size: 26px;
+}
 .loader {
+  position: fixed;
+  top: 45%;
+  left: 42%;
+  font-size: 30px;
   font-weight: 700;
+  color: #ffffff;
 }
 .loader__anim {
+  position: absolute;
+  top: -200%;
+  left: 45%;
   transform: rotateZ(45deg);
   perspective: 1000px;
   border-radius: 50%;
