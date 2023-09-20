@@ -8,11 +8,16 @@ import SlimSelect from 'slim-select';
 const selectOptions = document.querySelector('.breed-select');
 const errorMsg = document.querySelector('.error');
 const catInfoDiv = document.querySelector('.cat-info');
-const docBody = document.querySelector('body');
+// const docBody = document.querySelector('body');
 const loadingTxt = document.querySelector('.loader');
 
+const loadingScreen = document.createElement('div');
+loadingScreen.classList.add('body-background');
+
 export const fetchBreeds = () => {
-  docBody.classList.add('body-background');
+  // docBody.classList.add('body-background');
+  selectOptions.before(loadingScreen);
+
   loadingTxt.classList.remove('is-hidden');
   return axios
     .get('https://api.thecatapi.com/v1/breeds')
@@ -29,14 +34,18 @@ export const fetchBreeds = () => {
         select: selectOptions,
         settings: catInfoDiv,
       });
-      docBody.classList.remove('body-background');
+      // docBody.classList.remove('body-background');
+      document.querySelector('.body-background').remove();
+
       loadingTxt.classList.add('is-hidden');
     })
     .catch(error => Notify.failure(errorMsg.textContent));
 };
 
 export const fetchCatByBreed = breedId => {
-  docBody.classList.add('body-background');
+  // docBody.classList.add('body-background');
+  selectOptions.before(loadingScreen);
+
   loadingTxt.classList.remove('is-hidden');
   if (document.querySelector('.cat-img')) {
     document.querySelector('.cat-img').remove();
@@ -63,7 +72,9 @@ export const fetchCatByBreed = breedId => {
               <p>${cat[0].breeds[0].description}</p>
               <p><strong>Temperament:</strong> ${cat[0].breeds[0].temperament}</p></div></div>
               `;
-      docBody.classList.remove('body-background');
+      // docBody.classList.remove('body-background');
+      document.querySelector('.body-background').remove();
+
       loadingTxt.classList.add('is-hidden');
 
       catInfoDiv.insertAdjacentHTML('afterbegin', markup);

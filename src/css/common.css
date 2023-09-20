@@ -1,4 +1,10 @@
 .body-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9;
   background-color: #3f3f3f;
 }
 .cat-img {
@@ -18,6 +24,7 @@
   font-size: 30px;
   font-weight: 700;
   color: #ffffff;
+  z-index: 99;
 }
 .loader__anim {
   position: absolute;
